@@ -1,0 +1,48 @@
+CREATE TABLE customers (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    city TEXT
+);
+
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY,
+    customer_id INTEGER,
+    amount REAL,
+    date TEXT
+);
+
+INSERT INTO customers VALUES
+(1, 'Amit', 'Bangalore'),
+(2, 'Sara', 'Mumbai'),
+(3, 'John', 'Delhi');
+
+INSERT INTO orders VALUES
+(1, 1, 500, '2024-01-01'),
+(2, 1, 300, '2024-01-05'),
+(3, 2, 700, '2024-01-03'),
+(4, 3, 200, '2024-01-07');
+
+SELECT * FROM customers WHERE city = 'Bangalore';
+
+SELECT * FROM orders ORDER BY amount DESC;
+
+SELECT customer_id, SUM(amount) AS total
+FROM orders
+GROUP BY customer_id;
+
+SELECT customers.name, orders.amount
+FROM customers
+INNER JOIN orders
+ON customers.id = orders.customer_id;
+
+SELECT customer_id, AVG(amount) AS avg_spending
+FROM orders
+GROUP BY customer_id;
+
+SELECT * FROM orders
+WHERE amount > (SELECT AVG(amount) FROM orders);
+
+CREATE VIEW customer_total AS
+SELECT customer_id, SUM(amount) AS total
+FROM orders
+GROUP BY customer_id;
